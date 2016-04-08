@@ -10,7 +10,7 @@ window.addEventListener "DOMContentLoaded", ->
       .done (data) =>
         @setState(data: data)
       .fail (xhr, status, err) =>
-        console.error @props.url, err.toString()
+        console.error @props.url, status, err.toString()
 
     getInitialState: -> data: []
 
@@ -44,10 +44,5 @@ window.addEventListener "DOMContentLoaded", ->
         <h2 className="commentAuthor">{ this.props.author }</h2>
         <span dangerouslySetInnerHTML={{ __html: rawMarkup }}></span>
       </div>`
-
-  data = [
-    id: 1, author: 'Pete Hunt', text: 'This is one comment.'
-    id: 2, author: 'Jorden Walke', text: 'This is *another* comment.'
-  ]
 
   ReactDOM.render `<CommentBox url="/api/comments" pollInterval={ 2000 }/>`, document.querySelector('#content')

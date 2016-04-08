@@ -1,11 +1,27 @@
-$ ->
+window.addEventListener "DOMContentLoaded", ->
+  
   converter = new showdown.Converter()
   
   CommentBox = React.createClass
+    loadCommentsFromServer: ->
+      $.ajax
+        url: @props.url
+        dataType: 'json'
+      .done (data) =>
+        @setState(data: data)
+      .fail (xhr, status, err) =>
+        console.error @props.url, err.toString()
+
+    getInitialState: -> data: []
+
+    componentDidMount: ->
+      @loadCommentsFromServer()
+      setInterval @loadCommentsFromServer, @props.pollInterval
+
     render: ->
       `<div className="CommentBox">
         <h1>Comment</h1>
-        <CommentList data={ this.props.data } />
+        <CommentList data={ this.state.data } />
         <CommentForm />
       </div>`
 
@@ -34,4 +50,4 @@ $ ->
     id: 2, author: 'Jorden Walke', text: 'This is *another* comment.'
   ]
 
-  ReactDOM.render `<CommentBox data={ data }/>`, $('#content')[0]
+  ReactDOM.render `<CommentBox url="/api/comments" pollInterval={ 2000 }/>`, document.querySelector('#content')

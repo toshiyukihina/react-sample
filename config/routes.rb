@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   get 'dashboard/index'
 
   namespace :api do
-    resources :comments, only: :index, defaults: { format: :json }
+    resources :comments, only: %i(index create)
   end
 
   # Example of regular route:

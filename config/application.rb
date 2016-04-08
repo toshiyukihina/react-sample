@@ -33,7 +33,6 @@ module ReactSample
     config.active_record.raise_in_transactional_callbacks = true
 
     config.generators do |g|
-      puts g.class.name
       g.template_engine :slim
       g.assets false
       g.helper false
